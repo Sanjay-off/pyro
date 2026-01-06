@@ -1,10 +1,7 @@
 import asyncio
-from pyrogram import filters
 from bot.client import bot_app
-import bot.handlers  # This imports and registers all handlers
+import bot.handlers  # This imports and registers all handlers BEFORE bot starts
 import logging
-
-from config import ADMIN_ID
 
 # Configure logging
 logging.basicConfig(
@@ -18,9 +15,11 @@ from pyrogram.types import BotCommand
 async def main():
     """Main function to start the bot"""
     try:
+        # Handlers are already registered via the import above
         # Start the bot
         await bot_app.start()
         logger.info("Bot started successfully!")
+        
         # Set bot commands (shows in menu)
         await bot_app.set_bot_commands([
             BotCommand("start", "Start the bot"),
@@ -32,13 +31,18 @@ async def main():
         
         # Get bot information
         me = await bot_app.get_me()
-        logger.info(f"Bot is running as @{me.username}")
+        logger.info(f"Bot @{me.username} is now running!")
+        logger.info(f"Bot ID: {me.id}")
         
-        # Keep the bot running
+        # Keep the bot running and listening for updates
         await asyncio.Event().wait()
         
+    except KeyboardInterrupt:
+        logger.info("Bot stopped by user")
     except Exception as e:
         logger.error(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         await bot_app.stop()
         logger.info("Bot stopped")
