@@ -1,15 +1,15 @@
 from pyrogram import filters
 from bot.client import bot_app
 
-@bot_app.on_message(filters.command("start"))
-async def start_handler(client, message):
-    """Handle /start command"""
-    user_name = message.from_user.first_name
-    await message.reply_text(
-        f"👋 Hello {user_name}!\n\n"
-        f"Welcome to the bot. I'm now working correctly!\n\n"
-        f"Use /help to see available commands."
-    )
+# @bot_app.on_message(filters.command("start") & filters.private)
+# async def start_handler(client, message):
+#     """Handle /start command"""
+#     user_name = message.from_user.first_name
+#     await message.reply_text(
+#         f"👋 Hello {user_name}!\n\n"
+#         f"Welcome to the bot. I'm now working correctly!\n\n"
+#         f"Use /help to see available commands."
+#     )
 
 @bot_app.on_message(filters.command("help"))
 async def help_handler(client, message):
